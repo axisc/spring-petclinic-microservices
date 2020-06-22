@@ -15,17 +15,32 @@
  */
 package org.springframework.samples.petclinic.customers.web;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.samples.petclinic.customers.model.Owner;
+import org.springframework.samples.petclinic.customers.model.OwnerRepository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonGenerator.Feature;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.samples.petclinic.customers.model.Owner;
-import org.springframework.samples.petclinic.customers.model.OwnerRepository;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Juergen Hoeller
@@ -43,13 +58,28 @@ class OwnerResource {
 
     private final OwnerRepository ownerRepository;
 
+    private static final String DESTINATION_NAME = "createdowner";
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
     /**
      * Create Owner
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Owner createOwner(@Valid @RequestBody Owner owner) {
-        return ownerRepository.save(owner);
+    	
+    	Owner savedOwner = ownerRepository.save(owner);
+    	
+    	ObjectMapper objMapper = new ObjectMapper();
+    	try {
+			jmsTemplate.convertAndSend(DESTINATION_NAME, objMapper.writeValueAsString(savedOwner));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+        return savedOwner;
     }
 
     /**
