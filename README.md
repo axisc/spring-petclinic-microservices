@@ -173,6 +173,10 @@ Create 5 microservice apps.
     az spring-cloud app create --name ${VISITS_SERVICE} --instance-count 1 \
         --memory 2 \
         --jvm-options='-Xms2048m -Xmx2048m'
+
+    az spring-cloud app create --name ${COMMUNICATIONS_SERVICE} --instance-count 1 \
+        --memory 2 \
+        --jvm-options='-Xms2048m -Xmx2048m'
 ```
 
 ## Create MySQL Database
@@ -288,6 +292,16 @@ Deploy microservice applications to Azure.
               MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
               MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
               MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}
+
+    az spring-cloud app deploy --name ${COMMUNICATIONS_SERVICE} \
+        --jar-path ${VISITS_SERVICE_JAR} \
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql' \
+        --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
+              MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
+              MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
+              MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}	\
+              SERVICE_BUS_CONNECTION_STRING=${SERVICE_BUS_CONNECTION_STRING}	\
+              SERVICE_BUS_IDLE_TIMEOUT=${SERVICE_BUS_IDLE_TIMEOUT}
 ```
 
 ```bash
