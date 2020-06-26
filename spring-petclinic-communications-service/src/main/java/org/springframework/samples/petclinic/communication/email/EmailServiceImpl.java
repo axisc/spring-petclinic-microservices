@@ -3,9 +3,8 @@ package org.springframework.samples.petclinic.communication.email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.samples.petclinic.customers.model.Owner;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring4.SpringTemplateEngine;
 
 public class EmailServiceImpl implements EmailService {
     
@@ -18,15 +17,15 @@ public class EmailServiceImpl implements EmailService {
 	private final String DEFAULT_RECEIPIENT = ""; 
 	
 	@Override
-    public void sendOwnerWelcomeEmail(Owner owner) {
+    public void sendOwnerWelcomeEmail(String owner) {
         SimpleMailMessage message = new SimpleMailMessage();
         
         message.setTo(DEFAULT_RECEIPIENT);
         message.setSubject("Welcome to PetClinic!");
         
         final Context ctx = new Context();
-        ctx.setVariable("ownerid", owner.getId());
-        ctx.setVariable("recipientName", owner.getFirstName() + " " + owner.getLastName());
+//        ctx.setVariable("ownerid", owner.getId());
+//        ctx.setVariable("recipientName", owner.getFirstName() + " " + owner.getLastName());
         
         message.setText(templateEngine.process("emailTemplates/OwnerCreatedEmailTemplates.html", ctx));
         
