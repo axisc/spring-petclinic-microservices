@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.communication.email;
 
+import java.io.IOException;
+
 public interface EmailService {
 
-	void sendOwnerWelcomeEmail(String owner);
+	void sendOwnerWelcomeEmail(String owner) throws IOException;
 
 }

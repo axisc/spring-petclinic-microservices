@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.communication.listeners;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.samples.petclinic.communication.email.EmailService;
@@ -15,9 +17,12 @@ public class OwnerCreatedQueueListener {
 	
 
 	@JmsListener(destination = QUEUE_NAME)
-	public void receiveMessage(String ownerString) {
+	public void receiveMessage(String ownerString) throws IOException {
 		
-		emailService.sendOwnerWelcomeEmail(ownerString);
+		// remove the header information
+		String refinedOwnerString = ownerString.substring(ownerString.indexOf("{"));
+		
+		emailService.sendOwnerWelcomeEmail(refinedOwnerString);
 		
 	}
 

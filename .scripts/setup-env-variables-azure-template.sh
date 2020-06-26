@@ -32,3 +32,6 @@ export MYSQL_DATABASE_NAME=petclinic
 
 # ==== KEY VAULT Info ====
 export KEY_VAULT=your-keyvault-name # customize this
+
+# ===== SENDGRID API ====
+export SENDGRID_API_KEY=sendgrid-api-key #customize this
