@@ -14,19 +14,19 @@ import com.sendgrid.SendGridAPI;
 @Configuration
 @PropertySource("classpath:application.properties")
 public class AppConfig {
-	
+
 	@Value("${sendgrid.api.key}") String sendGridAPIKey;
 
 	@Bean
 	public EmailService getEmailService() {
 		return new EmailServiceImpl();
 	}
-	
+
 	@Bean
 	public SendGridAPI getSendGridApi() {
 		return new SendGrid(sendGridAPIKey);
 	}
-	
+
 	@Bean
 	public SpringTemplateEngine getSpringTemplateEngine() {
 		return new SpringTemplateEngine();

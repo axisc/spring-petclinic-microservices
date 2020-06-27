@@ -35,3 +35,8 @@ export KEY_VAULT=your-keyvault-name # customize this
 
 # ===== SENDGRID API ====
 export SENDGRID_API_KEY=sendgrid-api-key #customize this
+
+# ===== EMAIL OVERRIDES ====
+export EMAIL_ACTIVE=false #pick true or false
+export DEFAULT_RECIPIENT=john.doe@example.com #customize this
+
