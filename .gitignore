@@ -19,3 +19,6 @@ generated/
 
 # Skip scripts
 .scripts/
+
+# Spring beans
+*/.springBeans
