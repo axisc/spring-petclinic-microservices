@@ -28,5 +28,9 @@ export MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_NAME}\@${MYSQL_SERVER_
 export MYSQL_SERVER_ADMIN_PASSWORD=SuperS3cr3t # customize this
 export MYSQL_DATABASE_NAME=petclinic
 
+# ==== SERVICE BUS INFO ====
+export SERVICE_BUS_CONNECTION_STRING=connection-string-with-manage-permissions # customize this
+export SERVICE_BUS_IDLE_TIMEOUT=20000 # customize this
+
 # ==== KEY VAULT Info ====
 export KEY_VAULT=your-keyvault-name # customize this

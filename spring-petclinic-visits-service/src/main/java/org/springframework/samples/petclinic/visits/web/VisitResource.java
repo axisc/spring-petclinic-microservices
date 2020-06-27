@@ -16,13 +16,12 @@
 package org.springframework.samples.petclinic.visits.web;
 
 import java.util.List;
+
 import javax.validation.Valid;
 
-import io.micrometer.core.annotation.Timed;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.samples.petclinic.visits.model.Visit;
 import org.springframework.samples.petclinic.visits.model.VisitRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +31,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.micrometer.core.annotation.Timed;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Juergen Hoeller
@@ -45,6 +52,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Timed("petclinic.visit")
 class VisitResource {
+	
+	private static final String DESTINATION_NAME = "visitrecord";
+	
+	@Autowired
+	private JmsTemplate jmsTemplate;
 
     private final VisitRepository visitRepository;
 
@@ -56,7 +68,17 @@ class VisitResource {
 
         visit.setPetId(petId);
         log.info("Saving visit {}", visit);
-        return visitRepository.save(visit);
+        
+        Visit savedVisit = visitRepository.save(visit);
+        
+        ObjectMapper objMapper = new ObjectMapper();
+        try {
+        	jmsTemplate.convertAndSend(DESTINATION_NAME, objMapper.writeValueAsString(savedVisit));
+        } catch (JsonProcessingException e) {
+        	e.printStackTrace();
+        }
+        
+        return savedVisit;
     }
 
     @GetMapping("owners/*/pets/{petId}/visits")
