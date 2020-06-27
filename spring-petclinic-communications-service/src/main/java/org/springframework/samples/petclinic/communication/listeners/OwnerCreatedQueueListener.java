@@ -16,7 +16,7 @@ public class OwnerCreatedQueueListener {
 	private EmailService emailService;
 	
 
-	@JmsListener(destination = QUEUE_NAME)
+	@JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
 	public void receiveMessage(String ownerString) throws IOException {
 		
 		// remove the header information
