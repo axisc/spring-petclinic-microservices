@@ -48,8 +48,10 @@ public class EmailServiceImpl implements EmailService {
         ctx.setVariable("ownerid", idNode.asInt());
         ctx.setVariable("recipientName", firstNameNode.asText() + " " + lastNameNode.asText());
 
+
         // Create the email
-        Content content = new Content("text/richtext", templateEngine.process("emailTemplates/OwnerCreatedEmailTemplates.html", ctx));
+        String contentBody = templateEngine.process("OwnerCreatedEmailTemplates", ctx);
+        Content content = new Content("text/html", contentBody);
         Mail mail;
 
         // Send the email
