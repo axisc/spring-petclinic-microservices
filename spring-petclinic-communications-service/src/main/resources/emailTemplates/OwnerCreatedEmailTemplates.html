@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+    <p th:text="'Hi' + ${recipientName} + ','"></p>
+    
+    Welcome to PetClinic!
+    
+    
+    You can perform the below operations
+    <ul>
+    <li><a th:href="@{'https://aschhab-azure-spring-cloud-api-gateway.azuremicroservices.io/#!/owners/details/' + ${ownerid}}" > View your profile </a> </li>
+    <li><a th:href="@{'https://aschhab-azure-spring-cloud-api-gateway.azuremicroservices.io/#!/owners/' + ${ownerid} + '/edit'}" > Edit your profile </a> </li>
+    <li><a th:href="@{'https://aschhab-azure-spring-cloud-api-gateway.azuremicroservices.io/#!/owners/' + ${ownerid} + '/new-pet'}" > Add a new pet </a> </li>
+    
+    <li><a th:href="@{https://aschhab-azure-spring-cloud-api-gateway.azuremicroservices.io/#!/vets}" > View the vets </a> </li>
+    
+    
+    
+    </ul>
+     <p>
+      Regards, <br />
+      <em>The PetClinic Team</em>
+    </p>
+  </body>
+</html>

@@ -12,6 +12,7 @@ export ADMIN_SERVER=admin-server
 export CUSTOMERS_SERVICE=customers-service
 export VETS_SERVICE=vets-service
 export VISITS_SERVICE=visits-service
+export COMMUNICATIONS_SERVICE=communications-service
 
 # ==== JARS ====
 export API_GATEWAY_JAR=spring-petclinic-api-gateway/target/spring-petclinic-api-gateway-2.2.1.jar
@@ -19,6 +20,7 @@ export ADMIN_SERVER_JAR=spring-petclinic-admin-server/target/spring-petclinic-ad
 export CUSTOMERS_SERVICE_JAR=spring-petclinic-customers-service/target/spring-petclinic-customers-service-2.2.1.jar
 export VETS_SERVICE_JAR=spring-petclinic-vets-service/target/spring-petclinic-vets-service-2.2.1.jar
 export VISITS_SERVICE_JAR=spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.2.1.jar
+export COMMUNICATIONS_SERVICE_JAR=spring-petclinic-visits-service/target/spring-petclinic-communications-service-2.2.1.jar
 
 # ==== MYSQL INFO ====
 export MYSQL_SERVER_NAME=mysql-servername # customize this
@@ -34,3 +36,11 @@ export SERVICE_BUS_IDLE_TIMEOUT=20000 # customize this
 
 # ==== KEY VAULT Info ====
 export KEY_VAULT=your-keyvault-name # customize this
+
+# ===== SENDGRID API ====
+export SENDGRID_API_KEY=sendgrid-api-key #customize this
+
+# ===== EMAIL OVERRIDES ====
+export EMAIL_ACTIVE=false #pick true or false
+export DEFAULT_RECIPIENT=john.doe@example.com #customize this
+
