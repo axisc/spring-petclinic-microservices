@@ -373,7 +373,7 @@ Deploy microservice applications to Azure.
     
     az spring-cloud app deploy --name ${CUSTOMERS_SERVICE} \
         --jar-path ${CUSTOMERS_SERVICE_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql,communications  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
         --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
               MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
               MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
@@ -397,7 +397,7 @@ Deploy microservice applications to Azure.
     
     az spring-cloud app deploy --name ${VISITS_SERVICE} \
         --jar-path ${VISITS_SERVICE_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql,communications  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
         --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
               MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
               MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
@@ -409,7 +409,7 @@ Deploy microservice applications to Azure.
 
     az spring-cloud app deploy --name ${COMMUNICATIONS_SERVICE} \
         --jar-path ${COMMUNICATIONS_SERVICE_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql,communications,email  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
         --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
               MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
               MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
