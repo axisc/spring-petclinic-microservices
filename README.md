@@ -93,6 +93,16 @@ Open `.scripts/setup-env-variables-azure.sh` and enter the following information
     ...
     export MYSQL_SERVER_ADMIN_PASSWORD=SuperS3cr3t # customize this
     ...
+    
+    export SERVICE_BUS_CONNECTION_STRING=connection-string-with-manage-permissions # customize this
+    export SERVICE_BUS_IDLE_TIMEOUT=20000 # customize this
+    ...
+    export SENDGRID_API_KEY=sendgrid-api-key #customize this
+    ...
+    export EMAIL_ACTIVE=false #pick true or false
+    export DEFAULT_RECIPIENT=john.doe@example.com #customize this
+    ...
+    export APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=instrumentation-key # customize this
 ```
 
 Then, set the environment:
@@ -164,25 +174,108 @@ Create 5 microservice apps.
         --jvm-options='-Xms2048m -Xmx2048m'	\
         --enable-persistent-storage true
     
-    az spring-cloud app create --name ${CUSTOMERS_SERVICE} --instance-count 1 \
+    az spring-cloud app create --name ${CUSTOMERS_SERVICE} --instance-count 1 --is-public true \
         --memory 2 \
         --jvm-options='-Xms2048m -Xmx2048m'	\
         --enable-persistent-storage true
     
-    az spring-cloud app create --name ${VETS_SERVICE} --instance-count 1 \
+    az spring-cloud app create --name ${VETS_SERVICE} --instance-count 1 --is-public true \
         --memory 2 \
         --jvm-options='-Xms2048m -Xmx2048m'	\
         --enable-persistent-storage true
     
-    az spring-cloud app create --name ${VISITS_SERVICE} --instance-count 1 \
+    az spring-cloud app create --name ${VISITS_SERVICE} --instance-count 1 --is-public true \
         --memory 2 \
         --jvm-options='-Xms2048m -Xmx2048m'	\
         --enable-persistent-storage true
 
-    az spring-cloud app create --name ${COMMUNICATIONS_SERVICE} --instance-count 1 \
+    az spring-cloud app create --name ${COMMUNICATIONS_SERVICE} --instance-count 1 --is-public true \
         --memory 2 \
         --jvm-options='-Xms2048m -Xmx2048m'	\
         --enable-persistent-storage true
+```
+## Upload Application Performance Monitoring (APM) JARS
+
+### Download APM JARS
+Download [Application Insights JAR](https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent).
+
+```bash
+    # // Get Application Insights JAR
+    mkdir apm
+    cd apm
+    wget https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.0.0-PREVIEW.4/applicationinsights-agent-3.0.0-PREVIEW.5.jar
+
+```
+
+### Upload APM JARS
+
+Deploy a simple Java app that provides a Web user interface for uploading APM JARS and upload them. Credits to [`callicoder`](https://github.com/selvasingh/spring-boot-file-upload-download-rest-api-example).
+
+In the `application.properties` file, set the below variable
+
+```bash
+    file.upload-dir=/persistent
+```
+
+
+```bash
+    az spring-cloud app deploy --name ${API_GATEWAY} \
+        --jar-path ${FILE_UPLOAD_JAR}
+    
+    az spring-cloud app show --name ${API_GATEWAY} | grep url
+```
+
+Open the API Gateway app using the URL provided by the previous command and upload APM JARs.
+
+![](media/spring-boot-file-upload.jpg)
+
+```bash
+   az spring-cloud app deploy --name ${ADMIN_SERVER} \
+           --jar-path ${FILE_UPLOAD_JAR}
+           
+   az spring-cloud app show --name ${ADMIN_SERVER} | grep url
+```
+    
+Open the Admin Server app using the URL provided by the previous command and upload APM JARs.
+
+```bash
+    az spring-cloud app deploy --name ${CUSTOMERS_SERVICE} \
+        --jar-path ${FILE_UPLOAD_JAR}
+            
+   az spring-cloud app show --name ${CUSTOMERS_SERVICE} | grep url
+```
+Open the Customers Service app using the URL provided by the previous command and upload APM JARs.
+
+```bash
+    az spring-cloud app deploy --name ${VETS_SERVICE} \
+            --jar-path ${FILE_UPLOAD_JAR}
+            
+   az spring-cloud app show --name ${VETS_SERVICE} | grep url
+```
+Open the Vets Service app using the URL provided by the previous command and upload APM JARs.   
+
+```bash
+    az spring-cloud app deploy --name ${VISITS_SERVICE} \
+            --jar-path ${FILE_UPLOAD_JAR}
+            
+   az spring-cloud app show --name ${VISITS_SERVICE} | grep url
+```
+Open the Visits Service app using the URL provided by the previous command and upload APM JARs.
+
+```bash
+    az spring-cloud app deploy --name ${COMMUNICATIONS_SERVICE} \
+            --jar-path ${FILE_UPLOAD_JAR}
+            
+   az spring-cloud app show --name ${COMMUNICATIONS_SERVICE} | grep url
+```
+Open the Communications Service app using the URL provided by the previous command and upload APM JARs.
+
+Disable public URIs for Customers, Vets and Visits service.
+```bash
+    az spring-cloud app update --name ${CUSTOMERS_SERVICE} --is-public false
+    az spring-cloud app update --name ${VETS_SERVICE} --is-public false
+    az spring-cloud app update --name ${VISITS_SERVICE} --is-public false
+    az spring-cloud app update --name ${COMMUNICATIONS_SERVICE} --is-public false
 ```
 
 ## Create MySQL Database
