@@ -156,27 +156,33 @@ Create 5 microservice apps.
 ```bash
     az spring-cloud app create --name ${API_GATEWAY} --instance-count 1 --is-public true \
         --memory 2 \
-        --jvm-options='-Xms2048m -Xmx2048m'
+        --jvm-options='-Xms2048m -Xmx2048m'	\
+        --enable-persistent-storage true
     
     az spring-cloud app create --name ${ADMIN_SERVER} --instance-count 1 --is-public true \
         --memory 2 \
-        --jvm-options='-Xms2048m -Xmx2048m'
+        --jvm-options='-Xms2048m -Xmx2048m'	\
+        --enable-persistent-storage true
     
     az spring-cloud app create --name ${CUSTOMERS_SERVICE} --instance-count 1 \
         --memory 2 \
-        --jvm-options='-Xms2048m -Xmx2048m'
+        --jvm-options='-Xms2048m -Xmx2048m'	\
+        --enable-persistent-storage true
     
     az spring-cloud app create --name ${VETS_SERVICE} --instance-count 1 \
         --memory 2 \
-        --jvm-options='-Xms2048m -Xmx2048m'
+        --jvm-options='-Xms2048m -Xmx2048m'	\
+        --enable-persistent-storage true
     
     az spring-cloud app create --name ${VISITS_SERVICE} --instance-count 1 \
         --memory 2 \
-        --jvm-options='-Xms2048m -Xmx2048m'
+        --jvm-options='-Xms2048m -Xmx2048m'	\
+        --enable-persistent-storage true
 
     az spring-cloud app create --name ${COMMUNICATIONS_SERVICE} --instance-count 1 \
         --memory 2 \
-        --jvm-options='-Xms2048m -Xmx2048m'
+        --jvm-options='-Xms2048m -Xmx2048m'	\
+        --enable-persistent-storage true
 ```
 
 ## Create MySQL Database
@@ -259,47 +265,58 @@ Deploy microservice applications to Azure.
 ```bash
     az spring-cloud app deploy --name ${API_GATEWAY} \
         --jar-path ${API_GATEWAY_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql'
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
+        --env APPLICATIONINSIGHTS_CONNECTION_STRING=${APPLICATIONINSIGHTS_CONNECTION_STRING} \
+              APPLICATIONINSIGHTS_ROLE_NAME=${API_GATEWAY} 
     
     
     az spring-cloud app deploy --name ${ADMIN_SERVER} \
         --jar-path ${ADMIN_SERVER_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql'
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar'	\
+        --env APPLICATIONINSIGHTS_CONNECTION_STRING=${APPLICATIONINSIGHTS_CONNECTION_STRING} \
+              APPLICATIONINSIGHTS_ROLE_NAME=${ADMIN_SERVER} \
+    
     
     
     az spring-cloud app deploy --name ${CUSTOMERS_SERVICE} \
         --jar-path ${CUSTOMERS_SERVICE_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql' \
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
         --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
               MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
               MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
               MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}	\
               SERVICE_BUS_CONNECTION_STRING=${SERVICE_BUS_CONNECTION_STRING}	\
-              SERVICE_BUS_IDLE_TIMEOUT=${SERVICE_BUS_IDLE_TIMEOUT}
+              SERVICE_BUS_IDLE_TIMEOUT=${SERVICE_BUS_IDLE_TIMEOUT}	\
+              APPLICATIONINSIGHTS_CONNECTION_STRING=${APPLICATIONINSIGHTS_CONNECTION_STRING} \
+              APPLICATIONINSIGHTS_ROLE_NAME=${CUSTOMERS_SERVICE}
     
     
     az spring-cloud app deploy --name ${VETS_SERVICE} \
         --jar-path ${VETS_SERVICE_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql' \
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
         --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
               MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
               MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
-              MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}
+              MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}	\
+              APPLICATIONINSIGHTS_CONNECTION_STRING=${APPLICATIONINSIGHTS_CONNECTION_STRING} \
+              APPLICATIONINSIGHTS_ROLE_NAME=${VETS_SERVICE}
               
     
     az spring-cloud app deploy --name ${VISITS_SERVICE} \
         --jar-path ${VISITS_SERVICE_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql' \
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
         --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
               MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
               MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
               MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}	\
               SERVICE_BUS_CONNECTION_STRING=${SERVICE_BUS_CONNECTION_STRING}	\
-              SERVICE_BUS_IDLE_TIMEOUT=${SERVICE_BUS_IDLE_TIMEOUT}
+              SERVICE_BUS_IDLE_TIMEOUT=${SERVICE_BUS_IDLE_TIMEOUT}	\
+              APPLICATIONINSIGHTS_CONNECTION_STRING=${APPLICATIONINSIGHTS_CONNECTION_STRING} \
+              APPLICATIONINSIGHTS_ROLE_NAME=${VISITS_SERVICE}
 
     az spring-cloud app deploy --name ${COMMUNICATIONS_SERVICE} \
         --jar-path ${COMMUNICATIONS_SERVICE_JAR} \
-        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql' \
+        --jvm-options='-Xms2048m -Xmx2048m -Dspring.profiles.active=mysql  -javaagent:/persistent/applicationinsights-agent-3.0.0-PREVIEW.5.jar' \
         --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
               MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
               MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
@@ -308,7 +325,9 @@ Deploy microservice applications to Azure.
               SERVICE_BUS_IDLE_TIMEOUT=${SERVICE_BUS_IDLE_TIMEOUT}	\
               SENDGRID_API_KEY=${SENDGRID_API_KEY}	\
               EMAIL_ACTIVE=${EMAIL_ACTIVE}	\
-              DEFAULT_RECIPIENT=${DEFAULT_RECIPIENT}
+              DEFAULT_RECIPIENT=${DEFAULT_RECIPIENT}	\
+              APPLICATIONINSIGHTS_CONNECTION_STRING=${APPLICATIONINSIGHTS_CONNECTION_STRING} \
+              APPLICATIONINSIGHTS_ROLE_NAME=${COMMUNICATIONS_SERVICE}
 ```
 
 ```bash

@@ -44,3 +44,7 @@ export SENDGRID_API_KEY=sendgrid-api-key #customize this
 export EMAIL_ACTIVE=false #pick true or false
 export DEFAULT_RECIPIENT=john.doe@example.com #customize this
 
+# ==== Application Insights ====
+export APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=instrumentation-key # customize this
+
+
