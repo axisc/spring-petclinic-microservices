@@ -6,4 +6,6 @@ public interface EmailService {
 
 	void sendOwnerWelcomeEmail(String owner) throws IOException;
 
+	void sendVisitRecordEmail(String visitRecord) throws IOException;
+
 }

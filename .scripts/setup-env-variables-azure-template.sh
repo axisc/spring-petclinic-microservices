@@ -33,6 +33,7 @@ export MYSQL_DATABASE_NAME=petclinic
 # ==== SERVICE BUS INFO ====
 export SERVICE_BUS_CONNECTION_STRING=connection-string-with-manage-permissions # customize this
 export SERVICE_BUS_IDLE_TIMEOUT=20000 # customize this
+export SERVICE_BUS_TOPIC_CLIENT_ID=test-application #customize this
 
 # ==== KEY VAULT Info ====
 export KEY_VAULT=your-keyvault-name # customize this

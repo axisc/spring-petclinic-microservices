@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.communication.listeners;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -17,11 +18,11 @@ public class OwnerCreatedQueueListener {
 	
 
 	@JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
-	public void receiveMessage(String ownerString) throws IOException {
+	public void receiveMessage(String ownerString) throws IOException, InterruptedException {
 		
 		// remove the header information
 		String refinedOwnerString = ownerString.substring(ownerString.indexOf("{"));
-		
+		TimeUnit.SECONDS.sleep(2);
 		emailService.sendOwnerWelcomeEmail(refinedOwnerString);
 		
 	}
