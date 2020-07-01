@@ -15,7 +15,7 @@ public class VisitRecordTopicListener {
 	@Autowired
 	private EmailService emailService;
 	
-	@JmsListener(destination = TOPIC_NAME, subscription = "visitRecordSubscriber", containerFactory = "jmsListenerContainerFactory")
+	@JmsListener(destination = TOPIC_NAME, subscription = "visitRecordSubscriber", containerFactory = "topicJmsListenerContainerFactory")
 	public void receiveMessage(String visitRecordString) throws IOException {
 		// remove the header information
 		String refinedVisitRecordString = visitRecordString.substring(visitRecordString.indexOf("{"));
