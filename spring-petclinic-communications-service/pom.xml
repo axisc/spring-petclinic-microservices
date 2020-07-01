@@ -55,6 +55,10 @@
 			<artifactId>thymeleaf-spring4</artifactId>
 			<version>3.0.9.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 
         <!-- Spring Boot -->
         <dependency>

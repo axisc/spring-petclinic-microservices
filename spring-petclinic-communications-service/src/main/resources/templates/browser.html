@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title th:text="'Browse Queue ' + ${queueName}" ></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="refresh" content="3" />
+    <style>
+		#orderscss {
+		  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+		
+		#orderscss td, #orderscss th {
+		  border: 1px solid #ddd;
+		  padding: 8px;
+		}
+		
+		#orderscss tr:nth-child(even){background-color: #f2f2f2;}
+		
+		#orderscss tr:hover {background-color: #ddd;}
+		
+		#orderscss th {
+		  padding-top: 12px;
+		  padding-bottom: 12px;
+		  text-align: left;
+		  background-color: #4CAF50;
+		  color: white;
+		}
+	</style>
+</head>
+<body>
+	<h1 th:text="'Browse Queue ' + ${queueName}"></h1>
+	<table id="orderscss">
+		<tr>
+			<th> Data </th>
+		</tr>
+		<tr th:each="message: ${messageData}">
+			<td th:text="${message}" />
+		</tr>
+	</table>
+
+</body>
+</html>
