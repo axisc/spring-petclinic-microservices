@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title th:text="'Browse Queue ' + ${queueName}" ></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="refresh" content="3" />
+    <style>
+		#orderscss {
+		  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+		
+		#orderscss td, #orderscss th {
+		  border: 1px solid #ddd;
+		  padding: 8px;
+		}
+		
+		#orderscss tr:nth-child(even){background-color: #f2f2f2;}
+		
+		#orderscss tr:hover {background-color: #ddd;}
+		
+		#orderscss th {
+		  padding-top: 12px;
+		  padding-bottom: 12px;
+		  text-align: left;
+		  background-color: #4CAF50;
+		  color: white;
+		}
+	</style>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><span></span></a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+                <span class="sr-only"><os-p>Toggle navigation</os-p></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse" id="main-navbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li ui-sref-active="active">
+                    <a ui-sref="welcome" title="home page">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                        <span>Home</span>
+                    </a>
+                </li>
+
+                <li ui-sref-active="active" class="dropdown">
+                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">Owners<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref="owners"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span> All</span></a></li>
+                        <li><a ui-sref="ownerNew"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span> Register</span></a></li>
+                    </ul>
+                </li>
+
+                <li ui-sref-active="active">
+                    <a ui-sref="vets" title="veterinarians">
+                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                        <span>Veterinarians</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+</nav>
+	<h1 th:text="'Browse Queue ' + ${queueName}"></h1>
+	<table id="orderscss">
+		<tr>
+			<th> Id </th>
+			<th> First Name </th>
+			<th> Last Name </th>
+			<th> Address </th>
+			<th> City </th>
+			<th> Telephone </th>
+			<th> Email </th>
+			
+		</tr>
+		<tr th:each="owner: ${owners}">
+			<td th:text="${owner.id}" />
+			<td th:text="${owner.firstName}" />
+			<td th:text="${owner.lastName}" />
+			<td th:text="${owner.address}" />
+			<td th:text="${owner.city}" />
+			<td th:text="${owner.telephone}" />
+			<td th:text="${owner.email}" />
+		</tr>
+	</table>
+
+</body>
+</html>

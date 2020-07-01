@@ -23,3 +23,9 @@ spring:
             - Path=/api/customer/**
           filters:
             - StripPrefix=2
+        - id: communications-service
+          uri: http://communications-service
+          predicates:
+            - Path=/api/communications/**
+          filters:
+            - StripPrefix=2
