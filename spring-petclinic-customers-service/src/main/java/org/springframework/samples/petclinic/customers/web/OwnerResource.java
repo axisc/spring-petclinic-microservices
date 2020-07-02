@@ -15,12 +15,14 @@
  */
 package org.springframework.samples.petclinic.customers.web;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.samples.petclinic.customers.model.Owner;
@@ -34,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonGenerator.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -59,9 +60,14 @@ class OwnerResource {
     private final OwnerRepository ownerRepository;
 
     private static final String DESTINATION_NAME = "createdowner";
+    
+    private static final String communicationsProfile = "communications";
 
     @Autowired
     private JmsTemplate jmsTemplate;
+    
+    @Autowired
+    private Environment env;
 
     /**
      * Create Owner
@@ -72,12 +78,14 @@ class OwnerResource {
     	
     	Owner savedOwner = ownerRepository.save(owner);
     	
-    	ObjectMapper objMapper = new ObjectMapper();
-    	try {
-			jmsTemplate.convertAndSend(DESTINATION_NAME, objMapper.writeValueAsString(savedOwner));
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+    	if (Arrays.asList(env.getActiveProfiles()).contains(communicationsProfile)) {
+    		ObjectMapper objMapper = new ObjectMapper();
+    		try {
+    			jmsTemplate.convertAndSend(DESTINATION_NAME, objMapper.writeValueAsString(savedOwner));
+    		} catch (JsonProcessingException e) {
+    			e.printStackTrace();
+    		}
+    	}
 
         return savedOwner;
     }

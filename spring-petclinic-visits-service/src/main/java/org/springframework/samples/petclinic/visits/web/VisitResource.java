@@ -15,11 +15,13 @@
  */
 package org.springframework.samples.petclinic.visits.web;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.samples.petclinic.visits.model.Visit;
@@ -58,6 +60,9 @@ class VisitResource {
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
+    @Autowired
+    private Environment env;
+
     private final VisitRepository visitRepository;
 
     @PostMapping("owners/*/pets/{petId}/visits")
@@ -71,13 +76,15 @@ class VisitResource {
         
         Visit savedVisit = visitRepository.save(visit);
         
-        ObjectMapper objMapper = new ObjectMapper();
-        try {
-        	jmsTemplate.convertAndSend(DESTINATION_NAME, objMapper.writeValueAsString(savedVisit));
-        } catch (JsonProcessingException e) {
-        	e.printStackTrace();
+        if (Arrays.asList(env.getActiveProfiles()).contains(communicationsProfile)) {
+        	ObjectMapper objMapper = new ObjectMapper();
+        	try {
+        		jmsTemplate.convertAndSend(DESTINATION_NAME, objMapper.writeValueAsString(savedVisit));
+        	} catch (JsonProcessingException e) {
+        		e.printStackTrace();
+        	}
         }
-        
+
         return savedVisit;
     }
 
