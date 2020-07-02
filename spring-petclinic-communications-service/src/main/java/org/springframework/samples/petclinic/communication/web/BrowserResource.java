@@ -33,11 +33,12 @@ public class BrowserResource {
 	@Autowired
 	private JmsTemplate jmsTemplate;
 	
+	private final String queueName = "createdowner";
 	
-	@GetMapping("/browser/{queue}")
-	public String index(@PathVariable String queue,Model model) {
+	@GetMapping("/browse/created-owner")
+	public String index(Model model) {
 
-		List<OwnerDetails> owners = jmsTemplate.browse(queue, new BrowserCallback<List<OwnerDetails>>() {
+		List<OwnerDetails> owners = jmsTemplate.browse(queueName, new BrowserCallback<List<OwnerDetails>>() {
 
 			@Override
 			public List<OwnerDetails> doInJms(Session session, QueueBrowser browser) throws JMSException {
@@ -52,7 +53,7 @@ public class BrowserResource {
 			}
 			
 		});
-		model.addAttribute("queueName", queue);
+		model.addAttribute("queueName", queueName);
 		model.addAttribute("owners", owners);
 
 		return "browser";
