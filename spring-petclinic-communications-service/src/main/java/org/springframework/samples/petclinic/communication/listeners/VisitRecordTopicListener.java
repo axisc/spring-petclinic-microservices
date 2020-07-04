@@ -7,6 +7,9 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.samples.petclinic.communication.email.EmailService;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class VisitRecordTopicListener {
 
@@ -19,7 +22,7 @@ public class VisitRecordTopicListener {
 	public void receiveMessage(String visitRecordString) throws IOException {
 		// remove the header information
 		String refinedVisitRecordString = visitRecordString.substring(visitRecordString.indexOf("{"));
-
+		
 		emailService.sendVisitRecordEmail(refinedVisitRecordString);
 	}
 }
