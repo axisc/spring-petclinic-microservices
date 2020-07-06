@@ -26,6 +26,11 @@
 			<artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
 			<version>2.3.3-dev.20200703.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-servicebus-jms</artifactId>
+			<version>0.0.2</version>
+		</dependency>
 
 		<!-- JACKSON for JSON parsing -->
 		<dependency>
