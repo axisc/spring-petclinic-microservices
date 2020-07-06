@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.visits.web;
 
 import java.util.List;
 
+import javax.jms.Topic;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,8 @@ import lombok.extern.slf4j.Slf4j;
 @Timed("petclinic.visit")
 class VisitResource {
 	
-	private static final String DESTINATION_NAME = "visitrecord";
+	@Autowired
+	private Topic topic;
 	
 	@Autowired
 	private JmsTemplate jmsTemplate;
@@ -73,7 +75,7 @@ class VisitResource {
         
         ObjectMapper objMapper = new ObjectMapper();
         try {
-        	jmsTemplate.convertAndSend(DESTINATION_NAME, objMapper.writeValueAsString(savedVisit));
+        	jmsTemplate.convertAndSend(topic, objMapper.writeValueAsString(savedVisit));
         } catch (JsonProcessingException e) {
         	e.printStackTrace();
         }

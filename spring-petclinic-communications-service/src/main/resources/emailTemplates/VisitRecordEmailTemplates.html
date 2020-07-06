@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+		<p>Dear Pet Owner!</p>
+		
+		<p th:text="'Here is a summary of your recent visit on ' + ${date} + '!'"></p>
+		
+		<p th:text="${description}"></p>
+		<p>
+      Regards, <br />
+      <em>The PetClinic Team</em>
+    </p>
+  </body>
+</html>
