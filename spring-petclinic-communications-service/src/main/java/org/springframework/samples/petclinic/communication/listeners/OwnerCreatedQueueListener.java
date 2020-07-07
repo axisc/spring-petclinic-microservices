@@ -22,9 +22,8 @@ public class OwnerCreatedQueueListener {
 		
 		// remove the header information
 		String refinedOwnerString = ownerString.substring(ownerString.indexOf("{"));
-		TimeUnit.SECONDS.sleep(2);
+		TimeUnit.SECONDS.sleep(1);
 		emailService.sendOwnerWelcomeEmail(refinedOwnerString);
-		TimeUnit.SECONDS.sleep(15);
 		
 	}
 

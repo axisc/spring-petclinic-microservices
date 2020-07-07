@@ -47,8 +47,8 @@ public class BrowserResource {
 					TextMessage message = (TextMessage) messages.nextElement();
 					OwnerDetails owner = new OwnerDetails(message.getText().substring(message.getText().indexOf("{")));
 					owners.add(owner);
-					log.info("Browsed " + owner.toString());
 				}
+				log.info("Browsed " + owners.size() + " owners");
 				return owners;
 			}
 			
